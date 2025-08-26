@@ -3,13 +3,13 @@ name: Build-App
 on: push
 jobs:
   build:
-  runs-on: ubuntu-latest
-  steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-    - name: Set up dotnet
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: '10.0.x'
-    - name: Build project
-      run: dotnet build HelloWorld2.csproj
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set up dotnet
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - name: Build project
+        run: dotnet build HelloWorld2.csproj
