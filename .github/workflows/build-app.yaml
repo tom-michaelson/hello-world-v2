@@ -1,5 +1,5 @@
 ---
-name: Build-App
+name: Build and Upload
 
 on: [push]
 jobs:
@@ -14,5 +14,7 @@ jobs:
           dotnet-version: '10.0.x'
       - run: dotnet build HelloWorldV2.csproj
         name: build app
+      - uses: actions/upload-artifact@v3
+        name: upload artifact
       - run: dotnet test
         name: run tests
