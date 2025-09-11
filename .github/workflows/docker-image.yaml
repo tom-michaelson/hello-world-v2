@@ -9,4 +9,4 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Build the docker Image
-        run: docker build . --file Dockerfile --tag hello-world-v2:${date +%s}
+        run: docker build . --file Dockerfile --tag hello-world-v2:$(date +%s)
