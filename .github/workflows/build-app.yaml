@@ -19,5 +19,8 @@ jobs:
         name: build app
       - uses: actions/upload-artifact@v4
         name: upload artifact
+        with:
+          name: hello-world-app
+          path: bin/Debug/net10.0/
       - run: dotnet test
         name: run tests
