@@ -5,6 +5,9 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -22,5 +25,7 @@ jobs:
         with:
           name: hello-world-app
           path: bin/Debug/net10.0/
+      - name: Build the docker Image
+        run: docker build . --file Dockerfile --tag hello-world-v2:$(date +%s)
       - run: dotnet test
         name: run tests
