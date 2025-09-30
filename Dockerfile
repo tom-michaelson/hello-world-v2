@@ -13,7 +13,7 @@ FROM mcr.microsoft.com/dotnet/aspnet:10.0
 WORKDIR /HelloWorldV2
 COPY --from=build-env /HelloWorldV2/out .
 
-EXPOSE 3000
+EXPOSE 5000
 
 # Set the entry point for the application
 ENTRYPOINT ["dotnet", "HelloWorldV2.dll"]
