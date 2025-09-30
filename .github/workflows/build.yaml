@@ -27,7 +27,7 @@ jobs:
         name: upload artifact
         with:
           name: hello-world-app
-          path: dist
+          path: bin/Debug/net10.0/
       - name: Build the docker Image
         run: docker build . --file Dockerfile --tag hello-world-v2:$(date +%s)
       - run: dotnet test
@@ -65,7 +65,7 @@ jobs:
         uses: actions/download-artifact@v5
         with:
           name: hello-world-app
-          path: dist
+          path: bin/Debug/net10.0/
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -82,6 +82,6 @@ jobs:
       - name: Generate artifact attestation
         uses: actions/attest-build-provenance@v3
         with:
-          subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-${{ matrix.node-version }}
           subject-digest: ${{ steps.push.outputs.digest }}
           push-to-registry: true
