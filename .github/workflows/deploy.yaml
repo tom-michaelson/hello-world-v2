@@ -14,13 +14,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       
-      - name: Set up kubectl
-        uses: azure/k8s-set-context@v1
-        with:
-          kubeconfig: ${{ secrets.KUBE_SEC }}
+      - name: Create kubeconfig
+        run: |
+          mkdir -p $HOME/.kube
+          echo "${{ secrets.KUBE_SEC }}" | base64 -d > $HOME/.kube/config
+          chmod 600 $HOME/.kube/config
           
       - name: Verify Kubernetes connection
-        run: kubectl get nodes
+        run: |
+          echo "Testing connection to cluster..."
+          kubectl config view --minify
+          kubectl get nodes
         
       - name: Deploy to Kubernetes
         run: |
