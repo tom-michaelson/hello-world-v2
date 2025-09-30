@@ -1,0 +1,29 @@
+name: Deploy to Kubernetes
+on:
+  push:
+    branches:
+      - main
+      - release/*
+  pull_request:
+    branches:
+      - main
+env:
+  KUBE_CONFIG: ${{ secrets.KUBE_SEC }}
+
+jobs:
+ deploy:
+   runs-on: ubuntu-latest
+   steps:
+      - uses: actions/checkout@v4
+      - name: Get deployments
+        uses: actions-hub/kubectl@master
+        with:
+          args: get deployment
+      - name: Deploy yml
+        uses: actions-hub/kubectl@master
+        with:
+          args: apply -f kubedeploy.yml
+      - name: Get deployments
+        uses: actions-hub/kubectl@master
+        with:
+          args: get deployment
