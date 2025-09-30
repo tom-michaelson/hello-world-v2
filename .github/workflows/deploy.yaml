@@ -1,29 +1,33 @@
 name: Deploy to Kubernetes
 on:
-  push:
+  workflow_run:
+    workflows: ["Build and Upload"]
+    types:
+      - completed
     branches:
       - main
-      - release/*
-  pull_request:
-    branches:
-      - main
-env:
-  KUBE_CONFIG: ${{ secrets.KUBE_SEC }}
 
 jobs:
- deploy:
-   runs-on: ubuntu-latest
-   steps:
+  deploy:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    steps:
       - uses: actions/checkout@v4
-      - name: Get deployments
-        uses: actions-hub/kubectl@master
+      
+      - name: Set up kubectl
+        uses: azure/k8s-set-context@v1
         with:
-          args: get deployment
-      - name: Deploy yml
-        uses: actions-hub/kubectl@master
-        with:
-          args: apply -f kubedeploy.yml
-      - name: Get deployments
-        uses: actions-hub/kubectl@master
-        with:
-          args: get deployment
+          kubeconfig: ${{ secrets.KUBE_SEC }}
+          
+      - name: Verify Kubernetes connection
+        run: kubectl get nodes
+        
+      - name: Deploy to Kubernetes
+        run: |
+          kubectl apply -f kubedeploy.yml
+          kubectl rollout restart deployment/tom-deploy
+          
+      - name: Verify deployment
+        run: |
+          kubectl get deployment tom-deploy
+          kubectl get pods -l app=tom-me
