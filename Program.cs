@@ -8,6 +8,12 @@ var logic = new Logic();
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Configure to listen on all interfaces
+builder.WebHost.ConfigureKestrel(serverOptions =>
+{
+    serverOptions.ListenAnyIP(3000);
+});
+
 var app = builder.Build();
 
 app.MapGet("/", () => "Hello Web");

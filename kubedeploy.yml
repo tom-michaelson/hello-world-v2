@@ -17,6 +17,11 @@ spec:
       containers:
         - name: tom-app-2
           image: ghcr.io/tom-michaelson/hello-world-v2:latest
+          env:
+            - name: ASPNETCORE_URLS
+              value: "http://+:3000"
+            - name: ASPNETCORE_ENVIRONMENT
+              value: "Development"
           ports:
             - containerPort: 3000
 ---
