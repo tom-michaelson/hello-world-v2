@@ -14,19 +14,15 @@ jobs:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
       - uses: actions/checkout@v4
-          
-      - name: Verify Kubernetes connection
-        run: |
-          echo "Testing connection to cluster..."
-          kubectl config view --minify
-          kubectl get nodes
-        
-      - name: Deploy to Kubernetes
-        run: |
-          kubectl apply -f kubedeploy.yml
-          kubectl rollout restart deployment/tom-deploy
-          
-      - name: Verify deployment
-        run: |
-          kubectl get deployment tom-deploy
-          kubectl get pods -l app=tom-me
+      - name: Get deployments
+        uses: actions-hub/kubectl@master
+        with:
+          args: get deployment
+      - name: Deploy yml
+        uses: actions-hub/kubectl@master
+        with:
+          args: apply -f kubedeploy.yml
+      - name: Get deployments
+        uses: actions-hub/kubectl@master
+        with:
+          args: get deployment
