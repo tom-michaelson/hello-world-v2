@@ -34,6 +34,5 @@ spec:
   ports:
   - port: 80
     targetPort: 3000
-    nodePort: 30830
   selector:
     app: tom-me
