@@ -6,19 +6,14 @@ on:
       - completed
     branches:
       - main
-
+env:
+  KUBE_CONFIG: ${{ secrets.KUBE_SEC }}
 jobs:
   deploy:
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
       - uses: actions/checkout@v4
-      
-      - name: Create kubeconfig
-        run: |
-          mkdir -p $HOME/.kube
-          echo "${{ secrets.KUBE_SEC }}" | base64 -d > $HOME/.kube/config
-          chmod 600 $HOME/.kube/config
           
       - name: Verify Kubernetes connection
         run: |
