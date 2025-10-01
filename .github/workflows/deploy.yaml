@@ -18,6 +18,12 @@ jobs:
         uses: actions-hub/kubectl@master
         with:
           args: get deployment
+      - name: Login to Docker Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
       - name: Deploy yml
         uses: actions-hub/kubectl@master
         with:
